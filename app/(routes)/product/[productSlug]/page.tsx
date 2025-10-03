@@ -1,5 +1,5 @@
 "use client"
-import { useGetProductSlug } from "@/api/getProductSlug"
+import { useGetProductSlug } from "@/hooks/useGetProductSlug"
 import { useParams } from "next/navigation"
 import SkeletonProduct from "./components/skeleton-product"
 import CarouselProduct from "./components/carousel-product"

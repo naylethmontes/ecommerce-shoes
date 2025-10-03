@@ -4,7 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import { Star, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useGetReviews } from "@/api/getReviews";
+import { useGetReviews } from "@/hooks/useGetReviews";
 
 export default function AddReview({
   productId,

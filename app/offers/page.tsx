@@ -1,5 +1,5 @@
 "use client";
-import { useGetOffers } from "@/api/getOffers";
+import { useGetOffers } from "@/hooks/useGetOffers";
 import ProductOffer from "./components/productOffer";
 import { Separator } from "@/components/ui/separator";
 

@@ -1,5 +1,5 @@
 "use client";
-import { useGetReviews } from "@/api/getReviews";
+import { useGetReviews } from "@/hooks/useGetReviews";
 import { useAuth } from "@/hooks/useAuth";
 import AddReview from "./addReview";
 import { formatDate } from "@/lib/formatDate";

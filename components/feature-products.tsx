@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetFeatureProducts } from "@/api/useGetFeatureProducts";
+import { useGetFeatureProducts } from "@/hooks/useGetFeatureProducts";
 import { ProductType } from "@/types/product";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 import SkeletonShema from "./skeletonSchema";

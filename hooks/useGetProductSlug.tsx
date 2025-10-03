@@ -23,7 +23,7 @@ export function useGetProductSlug(slug?: string | string[]) {
         setLoading(false);
       }
     })();
-  }, [url, slug]);
+  }, [url, slug]); // 👈 agrega slug a las dependencias
 
   return { loading, result, error };
 }

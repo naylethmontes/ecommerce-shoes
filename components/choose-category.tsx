@@ -1,5 +1,5 @@
 "use client"
-import { useGetCategories } from "@/api/getProducts"
+import { useGetCategories } from "@/hooks/useGetProducts"
 import Link from "next/link"
 import { CategoryType } from "@/types/category"
 import Image from "next/image"
