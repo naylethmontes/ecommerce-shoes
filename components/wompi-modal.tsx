@@ -27,7 +27,7 @@ export default function WompiModal({
     const maxAttempts = 20;
 
     const checkWidget = () => {
-      const WompiWidget = (window as any).WidgetCheckout;
+      const WompiWidget = window.WidgetCheckout;
 
       if (WompiWidget) {
         const checkout = new WompiWidget({
@@ -36,7 +36,7 @@ export default function WompiModal({
           reference,
           publicKey,
           redirectUrl,
-          responseCallback: (result: any) => {
+          responseCallback: (result) => {
             console.log("🟢 Resultado del widget:", result);
           },
         });

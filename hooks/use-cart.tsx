@@ -7,7 +7,6 @@ export type CartItem = ProductType & {
   selectedSize?: string
   selectedColor?: string
   selectedColorImage?: string
-  //logica de duplicar
   cartItemId: string
 
 }
@@ -15,8 +14,6 @@ export type CartItem = ProductType & {
 interface CartStore {
   items: CartItem[]  // <--- Aquí debe usar CartItem, no ProductType
   addItem: (data: CartItem) => void
-  //items: ProductType[]
-  //addItem: (data: ProductType) => void
   removeItem: (cartItemId: string) => void
   removeAll: () => void
   updateItemSize: (cartItemId: string, size: string) => void

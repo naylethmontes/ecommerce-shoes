@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 
 interface ImagesOnClickProps {
@@ -11,11 +12,12 @@ const ImagesOnClick = (props: ImagesOnClickProps) => {
 
   return (
     <div onClick={() => router.push(`/product/${slug}`)} className="cursor-pointer ">
-      <img
+      <Image
         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`}
         alt="Product"
+        width={500}
+        height={500}
         className="max-w-full h-full sm:w-auto sm:h-50 overflow-hidden rounded-md"
-      //className="w-20 h-20 object-cover rounded-md border"
       />
     </div>
   )

@@ -7,6 +7,7 @@ import { useLovedProducts } from "@/hooks/use-loved-products"
 import { formatPrice } from "@/lib/formatPrice"
 import { ProductType } from "@/types/product"
 import { Heart } from "lucide-react"
+import Image from "next/image"
 import { useState } from "react"
 
 export type InfoProductProps = {
@@ -22,7 +23,6 @@ const InfoProduct = ({ product }: InfoProductProps) => {
   const [selectedColorImage, setSelectedColorImage] = useState<string | null>(null)
   const [error, setError] = useState(false)
 
-  const isOtherCategory = product.attributes.category.data.attributes.categoryName === "Complementos"
 
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
@@ -101,9 +101,11 @@ const InfoProduct = ({ product }: InfoProductProps) => {
         {/* Imagen del color seleccionado */}
         {selectedColorImage && (
           <div className="">
-            <img
+            <Image
               src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${selectedColorImage || product.attributes.images.data[0]?.attributes.url}`}
               alt="Product"
+              width={500}
+              height={500}
               className="w-20 h-20 object-cover rounded-md border"
             />
           </div>

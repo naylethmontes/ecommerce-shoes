@@ -4,12 +4,10 @@ import { useCart } from "@/hooks/use-cart"
 import { formatPrice } from "@/lib/formatPrice"
 import CartItem from "./components/cart-item"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/hooks/useAuth"
 import { Button } from "@/components/ui/button"
 
-
 export default function Page() {
-  const { items, removeAll } = useCart()
+  const { items } = useCart()
   const prices = items.map((product) => product.attributes.price)
   const totalPrice = prices.reduce((total, price) => total + price, 0)
   const router = useRouter()
@@ -51,15 +49,6 @@ export default function Page() {
               </div>
             )}
           </div>
-          {/*<div className="mt-5 text-center font-open">
-            <a href="https://wa.me/573024017103"
-              target="_blannk"
-              rel="noopener noreferrer"
-              className="text-lg text-amber-700 hover:underline"
-            >
-              Comprar con un asesor
-            </a>
-          </div>*/}
         </div>
       </div>
     </div>

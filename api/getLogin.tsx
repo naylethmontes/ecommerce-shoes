@@ -6,8 +6,6 @@ export function useLogin() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false)
 
-  const { login } = useAuth()
-
   async function loginUser({ identifier, password }: { identifier: string; password: string }) {
     setLoading(true);
     setError("");
@@ -40,9 +38,9 @@ export function useLogin() {
 
       setSuccess(true);
       return data;
-    } catch (err: any) {
+    } catch (error: unknown) {
       setLoading(false);
-      setError(err.message || "Error inesperado");
+      setError("Error inesperado");
     } finally {
       setLoading(false)
     }

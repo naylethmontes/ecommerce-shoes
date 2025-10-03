@@ -1,4 +1,5 @@
 "use client"
+import Image from "next/image"
 import { useState, useEffect } from "react"
 
 interface CarouselProductProps {
@@ -62,9 +63,11 @@ const CarouselProduct = ({ images, selectedColorImage }: CarouselProductProps) =
               : "hover:ring-2 hover:ring-neutral-400"
               }`}
           >
-            <img
+            <Image
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.attributes.url}`}
               alt="Miniatura"
+              width={500}
+              height={500}
               className="object-cover w-full h-full"
             />
           </button>

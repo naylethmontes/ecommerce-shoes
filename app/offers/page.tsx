@@ -3,8 +3,6 @@ import { useGetOffers } from "@/api/getOffers";
 import ProductOffer from "./components/productOffer";
 import { Separator } from "@/components/ui/separator";
 
-
-
 export default function OffersPage() {
   const { result: products, loading } = useGetOffers();
 

@@ -2,7 +2,7 @@
 import { useGetCategoryProduct } from "@/api/getCategoryProduct"
 import { Separator } from "@/components/ui/separator";
 import { ResponseType } from "@/types/response";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import FiltersControlsCategory from "./components/filters-controls-category";
 import SkeletonShema from "@/components/skeletonSchema";
 import ProductCard from "./components/product-card";
@@ -10,21 +10,27 @@ import { ProductType } from "@/types/product";
 import { useState } from "react";
 
 export default function Page() {
-  const params = useParams()
-  const { categorySlug } = params
+
+  const params = useParams();
+  // categorySlug puede ser string | string[] | undefined
+  const categorySlug = typeof params.categorySlug === 'string' ? params.categorySlug : Array.isArray(params.categorySlug) ? params.categorySlug[0] : undefined;
+  // Solo llama el hook si hay slug, si no, pasa string vacío
+  const { result = [], loading }: ResponseType = useGetCategoryProduct(categorySlug || "");
+  const [filterStyle, setFilterStyle] = useState('');
 
   if (!categorySlug) return null;
-  const { result, loading }: ResponseType = useGetCategoryProduct(categorySlug)
-  const [filterStyle, setFilterStyle] = useState('')
-  const router = useRouter()
 
-  const filteredProducts = result !== null && !loading && (
-    filterStyle === ''
-      ? result
-      : result.filter((product: ProductType) => product.attributes.style === filterStyle)
-  )
+  // result puede ser array o cualquier cosa, forzamos a array
+  const products: ProductType[] = Array.isArray(result) ? result : [];
+  // filteredProducts siempre será un array
+  const filteredProducts: ProductType[] =
+    !loading
+      ? (filterStyle === ''
+        ? products
+        : products.filter((product: ProductType) => product.attributes.style === filterStyle))
+      : [];
 
-  const categoryName = result?.[0]?.attributes?.category?.data?.attributes?.categoryName
+  const categoryName = products?.[0]?.attributes?.category?.data?.attributes?.categoryName;
 
   return (
     <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
@@ -44,12 +50,10 @@ export default function Page() {
           {loading && (
             <SkeletonShema grid={3} />
           )}
-          {filteredProducts !== null && !loading && (
-            filteredProducts.map((product: ProductType) => (
-              <ProductCard key={product.id} product={product} />
-            ))
-          )}
-          {filteredProducts !== null && !loading && filteredProducts.length === 0 && (
+          {!loading && filteredProducts.map((product: ProductType) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+          {!loading && filteredProducts.length === 0 && (
             <p className="font-serif text-2xl mt-10 text-center">No hay producto con este filtro</p>
           )}
         </div>

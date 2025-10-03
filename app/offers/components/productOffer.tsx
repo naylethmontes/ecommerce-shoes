@@ -15,7 +15,7 @@ const applyDiscount = (price: number, discount?: number | null) => {
 };
 
 export default function ProductOffer({ product }: Props) {
-  const { productName, slug, price, discount, images } = product.attributes;
+  const { productName, slug, price, discount } = product.attributes;
 
   const rawDiscount = product.attributes.discount ?? 0;
   const finalPrice = applyDiscount(price, discount);

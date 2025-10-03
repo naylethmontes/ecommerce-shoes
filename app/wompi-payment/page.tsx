@@ -1,34 +1,24 @@
 "use client";
-
 import Script from "next/script";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function WompiPaymentPage() {
-  const params = useSearchParams();
-
-  const name = params.get("name");
-  const lastname = params.get("lastname");
-  const email = params.get("email");
-  const phone = params.get("phone");
-  const address = params.get("address");
-  const city = params.get("city");
-  const notes = params.get("notes");
-
   const amountInCents = 100000; // 💰 valor en centavos
   const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || ""; // ⚠️ importante
 
   const [widgetReady, setWidgetReady] = useState(false);
 
   useEffect(() => {
-    if (widgetReady && (window as any).WidgetCheckout) {
-      (window as any).WidgetCheckout.open({
+    if (widgetReady && window.WidgetCheckout) {
+      const checkout = new window.WidgetCheckout({
         currency: "COP",
         amountInCents,
         reference: `PEDIDO-${Date.now()}`,
         publicKey,
         redirectUrl: "http://localhost:3000/success",
       });
+
+      checkout.open();
     }
   }, [widgetReady]);
 

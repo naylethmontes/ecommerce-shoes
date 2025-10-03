@@ -36,8 +36,8 @@ export function useRegister() {
 
       setSuccess(true);
       return data;
-    } catch (err: any) {
-      setError(err.message || "Error inesperado");
+    } catch (err: unknown) {
+      setError("Error inesperado");
       return null;
     } finally {
       setLoading(false);

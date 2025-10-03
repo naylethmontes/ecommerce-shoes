@@ -7,7 +7,6 @@ import Footer from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from 'sonner'
 import NextTopLoader from 'nextjs-toploader'
-import PaypalProvider from "@/components/paypalProviders";
 import WhatsappButton from "@/components/whatsappButton";
 
 
@@ -43,16 +42,11 @@ export default function RootLayout({
             speed={200}
             shadow="0 0 10px #2299DD, 0 0 5px #2299DD"
           />
-
-          <PaypalProvider>
-            <Navbar />
-            {children}
-            <Toaster />
-            <WhatsappButton />
-            <Footer />
-          </PaypalProvider>
-
-
+          <Navbar />
+          {children}
+          <Toaster />
+          <WhatsappButton />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

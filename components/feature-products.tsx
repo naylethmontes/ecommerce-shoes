@@ -9,6 +9,7 @@ import { Expand, ShoppingCart } from "lucide-react";
 import IconButton from "./icon-button";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/use-cart";
+import Image from "next/image";
 
 const FeatureProducts = () => {
   const { result, loading } = useGetFeatureProducts();
@@ -37,9 +38,11 @@ const FeatureProducts = () => {
                 <div className="p-1">
                   <Card className="py-4 border-gray-200 shadow-none">
                     <CardContent className="relative flex items-center justify-center px-6 py-2">
-                      <img
+                      <Image
                         src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${images.data[0].attributes.url}`}
                         alt={product.attributes.productName}
+                        width={500}
+                        height={500}
                         className="w-full h-full object-cover rounded-md"
                       />
                       <div className="absolute bottom-5 w-full opacity-0 transition duration-300 group-hover:opacity-100">

@@ -1,4 +1,3 @@
-import { ColorType } from "@/types/colors"
 import { ProductType } from "@/types/product"
 import { useEffect, useState } from "react"
 
@@ -16,8 +15,8 @@ export function useGetSizes() {
         const json = await res.json()
         setResult(json.data)
         setLoading(false)
-      } catch (error: any) {
-        setError(error.message || "Unknown error")
+      } catch (error: unknown) {
+        setError(error instanceof Error ? error.message : "Unknown error")
         setLoading(false)
       }
     })()

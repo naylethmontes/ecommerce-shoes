@@ -12,14 +12,9 @@ import { useAuth } from '@/hooks/useAuth'
 
 const publicKey = process.env.NEXT_PUBLIC_WOMPI_PUBLIC_KEY || ''
 
-declare global {
-  interface Window {
-    WidgetCheckout: any
-  }
-}
 
 const waitForWompi = () =>
-  new Promise<any>((resolve) => {
+  new Promise<typeof window.WidgetCheckout>((resolve) => {
     if (window.WidgetCheckout) {
       resolve(window.WidgetCheckout)
     } else {
@@ -39,7 +34,6 @@ const CheckoutForm = () => {
   const [formattedItems, setFormattedItems] = useState<string[]>([])
   const totalPrice = getTotalPrice()
   const { token } = useAuth()
-  const [legalIdType, setLegalIdType] = useState()
   const [formData, setFormData] = useState({
     fullName: "",
     lastName: "",
@@ -66,8 +60,6 @@ const CheckoutForm = () => {
     e.preventDefault()
     const uuid = uuidv4()
     const amountInCents = totalPrice * 100;
-
-    //const integrity = SHA256(`${amountInCents}COP${uuid}${publicKey}`).toString(Hex);
 
     try {
 
@@ -131,7 +123,7 @@ const CheckoutForm = () => {
       })
 
 
-      widget.open((result: any) => {
+      widget.open((result) => {
         console.log("resultado del widget", result);
       })
 

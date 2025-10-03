@@ -14,8 +14,8 @@ export function useGetOffers() {
         const json = await res.json()
         setResult(json.data)
         setLoading(false)
-      } catch (error: any) {
-        setError(error.message || "Error desconocido")
+      } catch (error: unknown) {
+        setError("Error desconocido")
         setLoading(false)
       }
     })()

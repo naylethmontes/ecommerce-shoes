@@ -22,8 +22,5 @@ export function redirectToWompiCheckout({
 	);
 	url.searchParams.set('customer-email', email);
 
-	// Puedes agregar campos personalizados con:
-	// url.searchParams.set("data[full_name]", "Nombre Apellido");
-
 	window.location.href = url.toString();
 }

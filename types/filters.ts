@@ -8,7 +8,7 @@ export type ResultFilterTypes = {
 	schema: {
 		attributes: {
 			style: {
-				enum: any;
+				enum: string[];
 			};
 		};
 	};

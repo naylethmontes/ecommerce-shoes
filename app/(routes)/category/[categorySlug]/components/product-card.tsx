@@ -5,6 +5,7 @@ import { formatPrice } from "@/lib/formatPrice"
 import { ProductType } from "@/types/product"
 import IconButton from "@/components/icon-button"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
+import Image from "next/image"
 
 type ProductCardProps = {
   product: ProductType
@@ -30,9 +31,11 @@ const ProductCard = (props: ProductCardProps) => {
           {product.attributes.images?.data?.map((image) => (
             <CarouselItem key={image.id} className="group">
               <div className="w-full aspect-[3/4] overflow-hidden rounded-md">
-                <img
+                <Image
                   src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.attributes.url}`}
                   alt={product.attributes.productName}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-cover transition-transform duration-300group-hover:scale-105"
                 />
               </div>

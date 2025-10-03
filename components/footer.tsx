@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Separator } from "./ui/separator"
 import * as Popover from "@radix-ui/react-popover"
 import { Moon } from "lucide-react"
+import Image from "next/image"
 
 const dataFooter = [
   {
@@ -117,7 +118,7 @@ const Footer = () => {
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <img
+          <Image
             src="/icons/wompi.png"
             alt="Wompi"
             width={55}
@@ -125,7 +126,7 @@ const Footer = () => {
             title="Wompi"
             className="object-contain transition-transform duration-300 hover:scale-110 hover:opacity-80"
           />
-          <img
+          <Image
             src="/icons/entrega.png"
             alt="Pago contra entrega"
             width={70}
@@ -133,7 +134,7 @@ const Footer = () => {
             title="Contra entrega"
             className="object-contain transition-transform duration-300 hover:scale-110 hover:opacity-80 "
           />
-          <img
+          <Image
             src="/icons/pse.png"
             alt="PSE"
             width={70}
@@ -141,7 +142,7 @@ const Footer = () => {
             title="PSE"
             className="object-contain transition-transform duration-300 hover:scale-110 hover:opacity-80"
           />
-          <img
+          <Image
             src="/icons/ba.png"
             alt="bancolombia"
             width={70}
@@ -171,7 +172,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             title="Instagram"
           >
-            <img
+            <Image
               src="/icons/instagram.png"
               alt="Instagram"
               width={80}
@@ -185,7 +186,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             title="Tik Tok"
           >
-            <img
+            <Image
               src="/icons/tiktok.png"
               alt="Tik Tok"
               width={60}

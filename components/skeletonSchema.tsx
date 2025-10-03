@@ -15,9 +15,6 @@ const SkeletonShema = (props: SkeletonShemaProps) => {
         <div className="space-y-2">
           <Skeleton className="h-4 w-[250px]" />
           <Skeleton className="h-4 w-[250px]" />
-
-
-
         </div>
 
       </div>

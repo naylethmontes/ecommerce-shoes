@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
-
 import { Star, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useGetReviews } from "@/api/getReviews";
@@ -89,7 +88,7 @@ export default function AddReview({
       // Refrescar lista de reseñas
       onDone();
       toast.success("Reseña enviada con exito");
-    } catch (err: any) {
+    } catch (err: unknown) {
       toast.error("Error de conexión con el servidor");
     }
   };

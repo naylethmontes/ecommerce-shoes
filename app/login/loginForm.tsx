@@ -10,7 +10,7 @@ import { useAuth } from "@/hooks/useAuth";
 export default function LoginForm() {
   const [identifier, setIdentifier] = useState("")
   const [password, setPassword] = useState("")
-  const { loginUser, loading, error, success } = useLogin()
+  const { loginUser, loading, error } = useLogin()
   const { user, token } = useAuth()
   const router = useRouter()
 

@@ -16,8 +16,8 @@ export function useGetCategoryProduct(slug: string | string[]) {
 
         setResult(json.data)
         setLoading(false)
-      } catch (error: any) {
-        setError(error.message || "Unknown error")
+      } catch (error: unknown) {
+        setError(error instanceof Error ? error.message : "Unknown error")
         setLoading(false)
       }
     })()

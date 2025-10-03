@@ -7,7 +7,6 @@ import { formatPrice } from "@/lib/formatPrice"
 import { cn } from "@/lib/utils"
 import { ProductType } from "@/types/product"
 import { X } from "lucide-react"
-import { useRouter } from "next/navigation"
 
 interface LovedItemProductProps {
   product: ProductType
@@ -15,7 +14,6 @@ interface LovedItemProductProps {
 
 const LovedItemProduct = (props: LovedItemProductProps) => {
   const { product } = props
-  const router = useRouter()
   const { removeLovedItem } = useLovedProducts()
   const { addItem } = useCart()
 
