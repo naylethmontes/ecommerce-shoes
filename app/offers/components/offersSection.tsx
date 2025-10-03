@@ -7,7 +7,7 @@ import ProductOffer from "./productOffer";
 
 export default function OfferSection() {
   const [offers, setOffers] = useState<ProductType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchOffers() {

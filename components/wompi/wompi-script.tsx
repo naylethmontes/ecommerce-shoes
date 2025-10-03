@@ -1,11 +1,7 @@
 "use client"
 import Script from "next/script"
 
-type Props = {
-  publicKey: string
-}
-
-export default function WompiScript({ publicKey }: Props) {
+export default function WompiScript() {
   return (
     <Script
       src="https://checkout.wompi.co/widget.js"

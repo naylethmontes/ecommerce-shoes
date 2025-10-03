@@ -5,7 +5,7 @@ interface ImagesOfferProps {
   url: string;
 }
 
-const ImagesOffers = ({ slug, url }: ImagesOfferProps) => {
+const ImagesOffers = ({ url }: ImagesOfferProps) => {
 
   return (
     <div className="cursor-pointer">

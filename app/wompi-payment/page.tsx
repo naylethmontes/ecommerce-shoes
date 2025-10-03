@@ -20,6 +20,7 @@ export default function WompiPaymentPage() {
 
       checkout.open();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [widgetReady]);
 
   return (

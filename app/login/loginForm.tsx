@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useAuth } from "@/hooks/useAuth";
 
-
 export default function LoginForm() {
   const [identifier, setIdentifier] = useState("")
   const [password, setPassword] = useState("")
@@ -19,7 +18,7 @@ export default function LoginForm() {
       toast.success(`Ya has iniciado sesión como ${user?.username}`)
       router.push("/")
     }
-  }, [token])
+  }, [token, router, user?.username])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()

@@ -1,9 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
 
-type SkeletonShemaProps = {
-  grid: number
-}
-
 const SkeletonProduct = () => {
   return (
 
@@ -14,12 +10,8 @@ const SkeletonProduct = () => {
         <Skeleton className="h-4 w-[200px]" />
         <Skeleton className="h-4 w-[200px]" />
         <Skeleton className="h-4 w-[200px]" />
-
       </div>
     </div>
-
-
-
 
   )
 

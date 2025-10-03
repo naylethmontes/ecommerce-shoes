@@ -1,5 +1,7 @@
+import { ProductType } from './product';
+
 export type ResponseType = {
-	result: string | object | null;
+	result: ProductType[] | null;
 	loading: boolean;
-	error: string;
+	error: string | null;
 };

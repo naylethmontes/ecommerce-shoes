@@ -28,7 +28,7 @@ const FeatureProducts = () => {
 
           {result?.map((product: ProductType) => {
 
-            const { attributes, id } = product
+            const { attributes } = product
             const { slug, images, productName, taste, style } = attributes
             return (
               <CarouselItem

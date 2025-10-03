@@ -55,7 +55,12 @@ const dataFooter = [
               rel="noopener noreferrer"
               className="flex items-center gap-2 text-gray-800 hover:text-amber-800 transition">
 
-              <img src={item.icon} alt={item.label} className="w-5 h-5 object-contain" />
+              <Image
+                src={item.icon}
+                alt={item.label}
+                width={20}
+                height={20}
+                className="w-5 h-5 object-contain" />
               <span>{item.label}</span>
 
             </a>
@@ -158,7 +163,7 @@ const Footer = () => {
             rel="noopener noreferrer"
             title="Facebook"
           >
-            <img
+            <Image
               src="/icons/face.png"
               alt="Facebook"
               width={40}

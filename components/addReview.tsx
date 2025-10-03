@@ -89,6 +89,7 @@ export default function AddReview({
       onDone();
       toast.success("Reseña enviada con exito");
     } catch (err: unknown) {
+      console.log(err);
       toast.error("Error de conexión con el servidor");
     }
   };
