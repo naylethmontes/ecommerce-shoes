@@ -28,7 +28,7 @@ export default function UserIconNavbar() {
   return (
     <div className="relative">
       <User
-        className="cursor-pointer text-black"
+        className="cursor-pointer text-black dark:text-white"
         strokeWidth='1'
         onClick={handleClick}
       />
