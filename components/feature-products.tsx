@@ -28,8 +28,16 @@ const FeatureProducts = () => {
 
           {result?.map((product: ProductType) => {
 
-            const { attributes } = product
-            const { slug, images, productName, taste, style } = attributes
+            // Proteger acceso a attributes por si vienen undefined desde el backend
+            const attributes = product?.attributes ?? {} as any;
+            const slug = attributes.slug as string | undefined;
+            const images = attributes.images ?? { data: [] };
+            const productName = attributes.productName ?? '';
+            const taste = attributes.taste ?? '';
+            const style = attributes.style ?? '';
+
+            const firstImageUrl = images?.data?.[0]?.attributes?.url ?? '';
+
             return (
               <CarouselItem
                 key={product.id}
@@ -38,17 +46,21 @@ const FeatureProducts = () => {
                 <div className="p-1">
                   <Card className="py-4 border-gray-200 shadow-none">
                     <CardContent className="relative flex items-center justify-center px-6 py-2">
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${images.data[0].attributes.url}`}
-                        alt={product.attributes.productName}
-                        width={500}
-                        height={500}
-                        className="w-full h-full object-cover rounded-md"
-                      />
+                      {firstImageUrl ? (
+                        <Image
+                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${firstImageUrl}`}
+                          alt={productName || 'Producto'}
+                          width={500}
+                          height={500}
+                          className="w-full h-full object-cover rounded-md"
+                        />
+                      ) : (
+                        <div className="w-full h-[250px] bg-gray-100 rounded-md flex items-center justify-center">Sin imagen</div>
+                      )}
                       <div className="absolute bottom-5 w-full opacity-0 transition duration-300 group-hover:opacity-100">
                         <div className="flex justify-center gap-x-6 text-white">
                           <IconButton
-                            onClick={() => router.push(`product/${slug}`)}
+                            onClick={() => slug && router.push(`/product/${slug}`)}
                             icon={<Expand size={20} />}
                             className="text-gray-600" />
 
