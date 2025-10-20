@@ -29,9 +29,9 @@ const FeatureProducts = () => {
           {result?.map((product: ProductType) => {
 
             // Proteger acceso a attributes por si vienen undefined desde el backend
-            const attributes = product?.attributes ?? {} as any;
-            const slug = attributes.slug as string | undefined;
-            const images = attributes.images ?? { data: [] };
+            const attributes: Partial<ProductType['attributes']> = product?.attributes ?? {};
+            const slug = attributes.slug;
+            const images = attributes.images;
             const productName = attributes.productName ?? '';
             const taste = attributes.taste ?? '';
             const style = attributes.style ?? '';

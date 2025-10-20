@@ -10,8 +10,9 @@ import NextTopLoader from 'nextjs-toploader'
 import WhatsappButton from "@/components/whatsappButton";
 
 
-const urbanist = Urbanist({
+export const urbanist = Urbanist({
   subsets: ["latin"],
+  variable: '--font-urbanist',
 });
 
 

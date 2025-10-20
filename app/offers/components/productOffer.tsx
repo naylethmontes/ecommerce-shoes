@@ -15,20 +15,18 @@ const applyDiscount = (price: number, discount?: number | null) => {
 };
 
 export default function ProductOffer({ product }: Props) {
-  const attributes = product?.attributes ?? {} as any;
+  const attributes: Partial<ProductType['attributes']> = product?.attributes ?? {};
   const productName = attributes.productName ?? '';
-  const slug = attributes.slug as string | undefined;
+  const slug = attributes.slug;
   const price = attributes.price ?? 0;
   const discount = attributes.discount ?? 0;
 
   const rawDiscount = attributes.discount ?? 0;
-  const finalPrice = applyDiscount(price, discount as number | undefined);
+  const finalPrice = applyDiscount(price, discount);
   const imageUrl = attributes.images?.data?.[0]?.attributes?.url;
 
-
-
   return (
-  <Link href={slug ? `/product/${slug}` : '#'} className="relative group block border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+    <Link href={slug ? `/product/${slug}` : '#'} className="relative group block border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
       {rawDiscount > 0 && (
         <span className="absolute top-2 left-2 bg-amber-700 text-white text-lg px-2 py-1 rounded-full z-10">
           -{discount}%
