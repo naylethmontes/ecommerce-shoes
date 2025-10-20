@@ -2,21 +2,44 @@
 import { useGetCategories } from "@/hooks/useGetProducts"
 import Link from "next/link"
 import { CategoryType } from "@/types/category"
+import { normalizeCategory } from '@/lib/normalizers'
 import Image from "next/image"
 
 const ChooseCategory = () => {
-  const { result, loading } = useGetCategories()
+  const { result, loading, error } = useGetCategories()
 
   return (
     <div className="max-w-6xl py-4 mx-auto sm:py-16 sm:px-24">
       <h3 className="px-6 pb-4 text-4xl font-sans sm:pb-8">Elige tu categoria favorita</h3>
 
       <div className="grid justify-center gap-5 sm:grid-cols-3 p-4">
+        {loading && (
+          <p className="text-center col-span-full">Cargando categorías...</p>
+        )}
+
+        {!loading && error && (
+          <p className="text-center col-span-full text-red-600">Error cargando categorías: {error}</p>
+        )}
+
+        {!loading && Array.isArray(result) && result.length === 0 && (
+          <p className="text-center col-span-full">No se encontraron categorías.</p>
+        )}
+
         {!loading && Array.isArray(result) && (
-          result.map((category: CategoryType) => {
-            const slug = category?.attributes?.slug;
-            const mainImageUrl = category?.attributes?.mainImage?.data?.attributes?.url;
-            const name = category?.attributes?.categoryName || 'Categoria';
+          result.map((rawCategory: CategoryType) => {
+            const category = normalizeCategory(rawCategory)
+            const slug = category.attributes.slug
+            const mainImageUrl = category.attributes.mainImage.data.attributes.url
+            const name = category.attributes.categoryName || 'Categoria'
+
+            const _base = process.env.NEXT_PUBLIC_BACKEND_URL ?? process.env.NEXT_PUBLIC_STRAPI_URL ?? ''
+            const previewSrc = mainImageUrl
+              ? (/^https?:\/\//i.test(mainImageUrl) || mainImageUrl.startsWith('//')
+                ? mainImageUrl
+                : _base
+                  ? `${_base.replace(/\/$/, '')}/${mainImageUrl.replace(/^\//, '')}`
+                  : mainImageUrl.startsWith('/') ? mainImageUrl : `/${mainImageUrl.replace(/^\//, '')}`)
+              : ''
 
             return (
               <Link
@@ -24,9 +47,9 @@ const ChooseCategory = () => {
                 href={slug ? `/category/${slug}` : '#'}
                 className="relative overflow-hidden bg-no-repeat bg-cover rounded-lg">
 
-                {mainImageUrl && (
+                {previewSrc && (
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${mainImageUrl}`}
+                    src={previewSrc}
                     width={500}
                     height={500}
                     alt={name}

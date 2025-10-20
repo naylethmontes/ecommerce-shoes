@@ -7,6 +7,7 @@ import FiltersControlsCategory from "./components/filters-controls-category";
 import SkeletonShema from "@/components/skeletonSchema";
 import ProductCard from "./components/product-card";
 import { ProductType } from "@/types/product";
+import { normalizeProduct } from '@/lib/normalizers'
 import { useState } from "react";
 
 export default function Page() {
@@ -21,14 +22,12 @@ export default function Page() {
   if (!categorySlug) return null;
 
   // result puede ser array o cualquier cosa, forzamos a array
-  const products: ProductType[] = Array.isArray(result) ? result : [];
+  const productsRaw = Array.isArray(result) ? result : [];
+  const products: ProductType[] = productsRaw.map((p) => normalizeProduct(p));
   // filteredProducts siempre será un array
-  const filteredProducts: ProductType[] =
-    !loading
-      ? (filterStyle === ''
-        ? products
-        : products.filter((product: ProductType) => product.attributes.style === filterStyle))
-      : [];
+  const filteredProducts: ProductType[] = !loading
+    ? (filterStyle === '' ? products : products.filter((product: ProductType) => product.attributes?.style === filterStyle))
+    : [];
 
   const categoryName = products?.[0]?.attributes?.category?.data?.attributes?.categoryName;
 

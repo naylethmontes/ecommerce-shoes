@@ -5,10 +5,13 @@ import { formatPrice } from "@/lib/formatPrice"
 import CartItem from "./components/cart-item"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
+import { normalizeProduct } from '@/lib/normalizers'
 
 export default function Page() {
   const { items } = useCart()
-  const prices = items.map((product) => product.attributes.price)
+  // Normalizar items del carrito para garantizar que attributes exista
+  const normalizedItems = items.map((it) => normalizeProduct(it))
+  const prices = normalizedItems.map((product) => product.attributes.price ?? 0)
   const totalPrice = prices.reduce((total, price) => total + price, 0)
   const router = useRouter()
 

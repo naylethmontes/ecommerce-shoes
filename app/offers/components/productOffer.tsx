@@ -4,6 +4,7 @@ import { ProductType } from "@/types/product";
 import { formatPrice } from "@/lib/formatPrice";
 import Link from "next/link";
 import ImagesOffers from "@/components/shared/imagesOffers";
+import { normalizeProduct } from '@/lib/normalizers'
 
 type Props = {
   product: ProductType;
@@ -15,7 +16,8 @@ const applyDiscount = (price: number, discount?: number | null) => {
 };
 
 export default function ProductOffer({ product }: Props) {
-  const attributes: Partial<ProductType['attributes']> = product?.attributes ?? {};
+  const normalized = normalizeProduct(product);
+  const attributes = normalized as Partial<ProductType['attributes']>;
   const productName = attributes.productName ?? '';
   const slug = attributes.slug;
   const price = attributes.price ?? 0;

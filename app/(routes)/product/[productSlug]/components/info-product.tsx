@@ -9,6 +9,7 @@ import { ProductType } from "@/types/product"
 import { Heart } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
+import { normalizeProduct } from '@/lib/normalizers'
 
 export type InfoProductProps = {
   product: ProductType
@@ -17,11 +18,28 @@ export type InfoProductProps = {
 const InfoProduct = ({ product }: InfoProductProps) => {
   const { addItem } = useCart()
   const { addLovedItem } = useLovedProducts()
+  const normalized = normalizeProduct(product)
 
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
   const [selectedColorImage, setSelectedColorImage] = useState<string | null>(null)
   const [error, setError] = useState(false)
+
+  // Preparar una URL segura para la imagen de preview
+  const _strapiBase = process.env.NEXT_PUBLIC_STRAPI_URL ?? process.env.NEXT_PUBLIC_BACKEND_URL ?? ''
+  const _rawPreview = selectedColorImage ?? normalized.attributes.images?.data?.[0]?.attributes?.url ?? ''
+  let previewSrc = ''
+  if (_rawPreview) {
+    if (/^https?:\/\//i.test(_rawPreview) || _rawPreview.startsWith('//')) {
+      previewSrc = _rawPreview
+    } else if (_strapiBase) {
+      previewSrc = `${_strapiBase.replace(/\/$/, '')}/${_rawPreview.replace(/^\//, '')}`
+    } else if (_rawPreview.startsWith('/')) {
+      previewSrc = _rawPreview
+    } else {
+      previewSrc = `/${_rawPreview.replace(/^\//, '')}`
+    }
+  }
 
 
   const handleAddToCart = () => {
@@ -32,10 +50,10 @@ const InfoProduct = ({ product }: InfoProductProps) => {
 
     setError(false)
 
-    const discount = product.attributes.discount || 0;
+    const discount = normalized.attributes.discount || 0;
     const discountedPrice = discount > 0
-      ? product.attributes.price - (product.attributes.price * discount) / 100
-      : product.attributes.price;
+      ? normalized.attributes.price - (normalized.attributes.price * discount) / 100
+      : normalized.attributes.price;
 
     const newItem: CartItem = {
       ...product,
@@ -44,7 +62,7 @@ const InfoProduct = ({ product }: InfoProductProps) => {
       selectedColorImage: selectedColorImage || undefined,
       cartItemId: crypto.randomUUID(),
       attributes: {
-        ...product.attributes,
+        ...normalized.attributes,
         price: discountedPrice, // aplicamos el precio con descuento
       },
 
@@ -56,15 +74,15 @@ const InfoProduct = ({ product }: InfoProductProps) => {
     <div className="">
       {/* Título y estilos */}
       <div className="justify-between sm:flex">
-        <h1 className="text-4xl font-sans">{product.attributes.productName}</h1>
+        <h1 className="text-4xl font-sans">{normalized.attributes.productName}</h1>
         <ProductStyleTaste
-          style={product.attributes.style}
-          taste={product.attributes.taste}
+          style={normalized.attributes.style}
+          taste={normalized.attributes.taste}
         />
       </div>
 
       <Separator className="my-4" />
-      <p className="font-open text-lg">{product.attributes.description}</p>
+      <p className="font-open text-lg">{normalized.attributes.description}</p>
 
       {/* Selector de color */}
       <Separator className="my-4" />
@@ -72,9 +90,9 @@ const InfoProduct = ({ product }: InfoProductProps) => {
         <p className="mb-2 font-bold text-lg">Selecciona un color:</p>
         <div className="flex flex-wrap gap-3 mb-4 font-sans">
 
-          {product.attributes.colors.data.map((color) => {
+          {(normalized.attributes.colors?.data ?? []).map((color) => {
             const name = color.attributes.name
-            const imageColor = color.attributes.imageColor?.data?.attributes?.url || null
+            const imageColor = color.attributes.imageColor?.data?.attributes?.url ?? null
             const isSelected = selectedColor === name
 
             return (
@@ -99,10 +117,10 @@ const InfoProduct = ({ product }: InfoProductProps) => {
         </div>
 
         {/* Imagen del color seleccionado */}
-        {selectedColorImage && (
+        {previewSrc && (
           <div className="">
             <Image
-              src={`${process.env.NEXT_PUBLIC_STRAPI_URL}${selectedColorImage || product.attributes.images.data[0]?.attributes.url}`}
+              src={previewSrc}
               alt="Product"
               width={500}
               height={500}
@@ -119,7 +137,7 @@ const InfoProduct = ({ product }: InfoProductProps) => {
       <div className="mb-4 ">
         <p className="mb-2 font-bold text-lg">Selecciona tu talla:</p>
         <div className="flex flex-wrap gap-3 font-sans">
-          {product.attributes.sizes?.data.map((size) => {
+          {(normalized.attributes.sizes?.data ?? []).map((size) => {
             const name = size.attributes.name
             return (
               <button
@@ -144,20 +162,20 @@ const InfoProduct = ({ product }: InfoProductProps) => {
       {/* Precio */}
       <Separator className="my-4" />
       {/* Mostrar precio con descuento si aplica */}
-      {product.attributes.discount && product.attributes.discount > 0 ? (
+      {normalized.attributes.discount && normalized.attributes.discount > 0 ? (
         <div className="flex items-center gap-3 my-4">
           <span className="text-gray-500 line-through text-lg">
-            {formatPrice(product.attributes.price)}
+            {formatPrice(normalized.attributes.price)}
           </span>
           <span className="text-red-600 text-2xl font-bold">
-            {formatPrice(product.attributes.price - (product.attributes.price * product.attributes.discount) / 100)}
+            {formatPrice(normalized.attributes.price - (normalized.attributes.price * normalized.attributes.discount) / 100)}
           </span>
           <span className="text-sm bg-red-600 text-white px-2 py-1 rounded">
-            -{product.attributes.discount}%
+            -{normalized.attributes.discount}%
           </span>
         </div>
       ) : (
-        <p className="my-4 text-2xl font-bold">{formatPrice(product.attributes.price)}</p>
+        <p className="my-4 text-2xl font-bold">{formatPrice(normalized.attributes.price)}</p>
       )}
 
       {/* Mensaje de error */}

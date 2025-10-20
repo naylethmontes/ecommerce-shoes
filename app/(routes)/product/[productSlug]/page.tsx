@@ -4,6 +4,7 @@ import { useParams } from "next/navigation"
 import SkeletonProduct from "./components/skeleton-product"
 import CarouselProduct from "./components/carousel-product"
 import InfoProduct from "./components/info-product"
+import { normalizeProduct } from '@/lib/normalizers'
 import ReviewsSection from "@/components/reviewsSection"
 
 export default function Page() {
@@ -21,16 +22,16 @@ export default function Page() {
   }
 
   const product = result[0];
+  const normalized = normalizeProduct(product)
 
   return (
     <div className="max-w-6xl mx-auto sm:py-18 sm:px-6 lg:px-10 ">
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-12 items-start p-2">
-        <CarouselProduct images={product.attributes.images} />
-        <InfoProduct product={result[0]} />
+        <CarouselProduct images={normalized.attributes.images} />
+        <InfoProduct product={normalized} />
       </div>
       <ReviewsSection productId={product.id} />
     </div>
   )
-
 
 }

@@ -6,6 +6,7 @@ import { formatDate } from "@/lib/formatDate";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+
 export default function ReviewsSection({ productId }: { productId: number }) {
   const { user } = useAuth();
   const { reviews, loading, fetchReviews } = useGetReviews(productId);
@@ -44,22 +45,22 @@ export default function ReviewsSection({ productId }: { productId: number }) {
               >
                 {/* Estrellas */}
                 <p className="text-yellow-500 mb-2">
-                  {"⭐".repeat(review.attributes.rating)}
+                  {"⭐".repeat(Math.max(0, Number(review.attributes?.rating ?? 0)))}
                 </p>
                 {/* Nombre y fecha */}
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-serif font-semibold text-lg text-gray-900 px-2 dark:text-gray-200">
-                    {review.attributes.user?.data?.attributes.username ||
-                      review.attributes.username || "Usuario"}
+                    {review.attributes?.user?.data?.attributes.username ||
+                      review.attributes?.username || "Usuario"}
                   </p>
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    {formatDate(review.attributes.createdAt)}
+                    {formatDate(review.attributes?.createdAt || "")}
                   </span>
                 </div>
 
                 {/* Comentario */}
                 <p className="text-gray-700 text-base font-sans leading-relaxed dark:text-gray-400">
-                  {review.attributes.comment}
+                  {review.attributes?.comment ?? ''}
                 </p>
               </li>
             ))}

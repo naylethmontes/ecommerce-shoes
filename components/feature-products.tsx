@@ -10,6 +10,7 @@ import IconButton from "./icon-button";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/use-cart";
 import Image from "next/image";
+import { normalizeProduct } from '@/lib/normalizers'
 
 const FeatureProducts = () => {
   const { result, loading } = useGetFeatureProducts();
@@ -28,8 +29,10 @@ const FeatureProducts = () => {
 
           {result?.map((product: ProductType) => {
 
+            const normalized = normalizeProduct(product)
+
             // Proteger acceso a attributes por si vienen undefined desde el backend
-            const attributes: Partial<ProductType['attributes']> = product?.attributes ?? {};
+            const attributes: Partial<ProductType['attributes']> = normalized.attributes ?? {};
             const slug = attributes.slug;
             const images = attributes.images;
             const productName = attributes.productName ?? '';
