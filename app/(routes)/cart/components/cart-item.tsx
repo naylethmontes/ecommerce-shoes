@@ -22,8 +22,8 @@ const CartItem = (props: CartItemProps) => {
   return (
     <li className="flex flex-wrap py-6 border-b mt-5">
       <ImagesOnClick
-        slug={product.attributes.slug}
-        url={product.attributes.images.data[0].attributes.url}
+        slug={product?.attributes?.slug}
+        url={product?.attributes?.images?.data?.[0]?.attributes?.url}
 
       />
 
@@ -43,8 +43,8 @@ const CartItem = (props: CartItemProps) => {
               className="border px-3 py-1 rounded-md text-md dark:bg-gray-300 dark:text-black font-sans"
             >
               <option value="" disabled className="dark:bg-gray-600 dark:text-black font-sans text-md bg-gray-300 text-black">Selecciona una talla</option>
-              {product.attributes.sizes?.data?.map((sizeObj) => {
-                const size = sizeObj.attributes.name
+              {product.attributes?.sizes?.data?.map((sizeObj) => {
+                const size = sizeObj.attributes?.name
                 return (
                   <option key={sizeObj.id} value={size}>{size}</option>
                 )
@@ -65,9 +65,9 @@ const CartItem = (props: CartItemProps) => {
             >
               <option value="" disabled className="dark:bg-gray-600 dark:text-black font-sans text-md bg-gray-300 text-black">Selecciona un color</option>
 
-              {product.attributes.colors.data.map((color) => (
-                <option key={color.id} value={color.attributes.name}>
-                  {color.attributes.name}
+              {product.attributes?.colors?.data?.map((color) => (
+                <option key={color.id} value={color.attributes?.name}>
+                  {color.attributes?.name}
                 </option>
               ))}
             </select>

@@ -13,22 +13,30 @@ const ChooseCategory = () => {
 
       <div className="grid justify-center gap-5 sm:grid-cols-3 p-4">
         {!loading && Array.isArray(result) && (
-          result.map((category: CategoryType) => (
-            <Link
-              key={category.id}
-              href={`/category/${category.attributes.slug}`}
-              className="relative overflow-hidden bg-no-repeat bg-cover rounded-lg">
+          result.map((category: CategoryType) => {
+            const slug = category?.attributes?.slug;
+            const mainImageUrl = category?.attributes?.mainImage?.data?.attributes?.url;
+            const name = category?.attributes?.categoryName || 'Categoria';
 
-              <Image
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${category.attributes.mainImage.data.attributes.url}`}
-                width={500}
-                height={500}
-                alt={category.attributes.categoryName}
-                className="w-full h-full transition duration-300 ease-in-out rounded-lg object-cover hover:scale-110" />
+            return (
+              <Link
+                key={category.id}
+                href={slug ? `/category/${slug}` : '#'}
+                className="relative overflow-hidden bg-no-repeat bg-cover rounded-lg">
 
-              <p className="absolute w-full py-2 text-lg font-bold text-center text-black bottom-5 backdrop-blur-lg font-serif">{category.attributes.categoryName}</p>
-            </Link>
-          ))
+                {mainImageUrl && (
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${mainImageUrl}`}
+                    width={500}
+                    height={500}
+                    alt={name}
+                    className="w-full h-full transition duration-300 ease-in-out rounded-lg object-cover hover:scale-110" />
+                )}
+
+                <p className="absolute w-full py-2 text-lg font-bold text-center text-black bottom-5 backdrop-blur-lg font-serif">{name}</p>
+              </Link>
+            )
+          })
         )}
 
       </div>

@@ -29,7 +29,7 @@ const LovedItemProduct = (props: LovedItemProductProps) => {
   return (
 
     <li className="flex flex-wrap py-6 border-b mt-5">
-      <ImagesOnClick slug={product.attributes.slug} url={product.attributes.images.data[0].attributes.url} />
+      <ImagesOnClick slug={product?.attributes?.slug} url={product?.attributes?.images?.data?.[0]?.attributes?.url} />
 
       <div className="flex justify-between flex-1 px-6">
 
