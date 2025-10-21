@@ -26,20 +26,18 @@ const InfoProduct = ({ product }: InfoProductProps) => {
   const [error, setError] = useState(false)
 
   // Preparar una URL segura para la imagen de preview
-  const _strapiBase = process.env.NEXT_PUBLIC_STRAPI_URL ?? process.env.NEXT_PUBLIC_BACKEND_URL ?? ''
-  const _rawPreview = selectedColorImage ?? normalized.attributes.images?.data?.[0]?.attributes?.url ?? ''
-  let previewSrc = ''
-  if (_rawPreview) {
-    if (/^https?:\/\//i.test(_rawPreview) || _rawPreview.startsWith('//')) {
-      previewSrc = _rawPreview
-    } else if (_strapiBase) {
-      previewSrc = `${_strapiBase.replace(/\/$/, '')}/${_rawPreview.replace(/^\//, '')}`
-    } else if (_rawPreview.startsWith('/')) {
-      previewSrc = _rawPreview
-    } else {
-      previewSrc = `/${_rawPreview.replace(/^\//, '')}`
-    }
-  }
+  // ✅ Función para generar una URL válida tanto local como Cloudinary
+  const getImageUrl = (url?: string | null): string => {
+    if (!url) return "";
+    return url.startsWith("http")
+      ? url
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`;
+  };
+
+  // ✅ Usamos la imagen del color seleccionado o la primera disponible
+  const previewSrc = getImageUrl(
+    selectedColorImage || normalized.attributes.images?.data?.[0]?.attributes?.url
+  );
 
 
   const handleAddToCart = () => {

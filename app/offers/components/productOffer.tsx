@@ -17,7 +17,7 @@ const applyDiscount = (price: number, discount?: number | null) => {
 
 export default function ProductOffer({ product }: Props) {
   const normalized = normalizeProduct(product);
-  const attributes = normalized as Partial<ProductType['attributes']>;
+  const attributes = normalized.attributes ?? {};
   const productName = attributes.productName ?? '';
   const slug = attributes.slug;
   const price = attributes.price ?? 0;

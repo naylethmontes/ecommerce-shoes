@@ -39,7 +39,13 @@ const FeatureProducts = () => {
             const taste = attributes.taste ?? '';
             const style = attributes.style ?? '';
 
-            const firstImageUrl = images?.data?.[0]?.attributes?.url ?? '';
+            const rawUrl = images?.data?.[0]?.attributes?.url ?? "";
+            const base = process.env.NEXT_PUBLIC_BACKEND_URL ?? process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
+            const imageUrl = rawUrl
+              ? rawUrl.startsWith("http")
+                ? rawUrl
+                : `${base}${rawUrl}`
+              : "";
 
             return (
               <CarouselItem
@@ -49,9 +55,9 @@ const FeatureProducts = () => {
                 <div className="p-1">
                   <Card className="py-4 border-gray-200 shadow-none">
                     <CardContent className="relative flex items-center justify-center px-6 py-2">
-                      {firstImageUrl ? (
+                      {imageUrl ? (
                         <Image
-                          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${firstImageUrl}`}
+                          src={imageUrl}
                           alt={productName || 'Producto'}
                           width={500}
                           height={500}

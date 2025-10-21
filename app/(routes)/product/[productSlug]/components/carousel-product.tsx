@@ -1,4 +1,5 @@
 "use client"
+import { get } from "http"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 
@@ -33,6 +34,12 @@ const CarouselProduct = ({ images, selectedColorImage }: CarouselProductProps) =
     }
   }, [selectedColorImage])
 
+  const getImageUrl = (url: string) => {
+    return url?.startsWith("http")
+      ? url
+      : `${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`;
+  };
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { left, top, width, height } = e.currentTarget.getBoundingClientRect()
     const x = ((e.pageX - left) / width) * 100
@@ -54,24 +61,27 @@ const CarouselProduct = ({ images, selectedColorImage }: CarouselProductProps) =
     <div className="flex flex-col lg:flex-row gap-2 w-full max-w-6xl px-2">
       {/* Miniaturas */}
       <div className="flex lg:flex-col gap-2 order-2 lg:order-1 justify-center">
-        {images.data.map((image) => (
-          <button
-            key={image.id}
-            onClick={() => setSelectedImage(image)}
-            className={`border rounded-md overflow-hidden w-20 h-20 lg:w-24 lg:h-24 transition-all ${selectedImage.id === image.id
-              ? "ring-2 ring-black"
-              : "hover:ring-2 hover:ring-neutral-400"
-              }`}
-          >
-            <Image
-              src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.attributes.url}`}
-              alt="Miniatura"
-              width={500}
-              height={500}
-              className="object-cover w-full h-full"
-            />
-          </button>
-        ))}
+        {images.data.map((image) => {
+          const getUrl = getImageUrl(image.attributes.url);
+          return (
+            <button
+              key={image.id}
+              onClick={() => setSelectedImage(image)}
+              className={`border rounded-md overflow-hidden w-20 h-20 lg:w-24 lg:h-24 transition-all ${selectedImage.id === image.id
+                ? "ring-2 ring-black"
+                : "hover:ring-2 hover:ring-neutral-400"
+                }`}
+            >
+              <Image
+                src={getUrl}
+                alt="Miniatura"
+                width={500}
+                height={500}
+                className="object-cover w-full h-full"
+              />
+            </button>
+          )
+        })}
       </div>
 
       {/* Imagen principal con zoom */}

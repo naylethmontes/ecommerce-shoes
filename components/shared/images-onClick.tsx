@@ -13,12 +13,18 @@ const ImagesOnClick = (props: ImagesOnClickProps) => {
   const handleClick = () => {
     if (slug) router.push(`/product/${slug}`)
   }
+  const base = process.env.NEXT_PUBLIC_BACKEND_URL ?? process.env.NEXT_PUBLIC_STRAPI_URL ?? "";
+  const imageUrl = url
+    ? url.startsWith("http")
+      ? url
+      : `${base.replace(/\/$/, "")}/${url.replace(/^\//, "")}`
+    : "";
 
   return (
     <div onClick={handleClick} className="cursor-pointer ">
-      {url ? (
+      {imageUrl ? (
         <Image
-          src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`}
+          src={imageUrl}
           alt="Product"
           width={500}
           height={500}

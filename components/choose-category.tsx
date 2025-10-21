@@ -29,16 +29,14 @@ const ChooseCategory = () => {
           result.map((rawCategory: CategoryType) => {
             const category = normalizeCategory(rawCategory)
             const slug = category.attributes.slug
-            const mainImageUrl = category.attributes.mainImage.data.attributes.url
             const name = category.attributes.categoryName || 'Categoria'
 
-            const _base = process.env.NEXT_PUBLIC_BACKEND_URL ?? process.env.NEXT_PUBLIC_STRAPI_URL ?? ''
-            const previewSrc = mainImageUrl
-              ? (/^https?:\/\//i.test(mainImageUrl) || mainImageUrl.startsWith('//')
-                ? mainImageUrl
-                : _base
-                  ? `${_base.replace(/\/$/, '')}/${mainImageUrl.replace(/^\//, '')}`
-                  : mainImageUrl.startsWith('/') ? mainImageUrl : `/${mainImageUrl.replace(/^\//, '')}`)
+            const rawUrl = category.attributes.mainImage?.data?.attributes?.url
+            const base = process.env.NEXT_PUBLIC_BACKEND_URL ?? process.env.NEXT_PUBLIC_STRAPI_URL ?? ''
+            const imageUrl = rawUrl
+              ? rawUrl.startsWith('http')
+                ? rawUrl
+                : `${base}${rawUrl}`
               : ''
 
             return (
@@ -47,9 +45,9 @@ const ChooseCategory = () => {
                 href={slug ? `/category/${slug}` : '#'}
                 className="relative overflow-hidden bg-no-repeat bg-cover rounded-lg">
 
-                {previewSrc && (
+                {imageUrl && (
                   <Image
-                    src={previewSrc}
+                    src={imageUrl}
                     width={500}
                     height={500}
                     alt={name}

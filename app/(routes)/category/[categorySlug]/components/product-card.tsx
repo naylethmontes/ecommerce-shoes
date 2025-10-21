@@ -32,27 +32,36 @@ const ProductCard = (props: ProductCardProps) => {
         className="w-full max-w-sm "
       >
         <CarouselContent>
-          {normalized.attributes.images?.data?.map((image) => (
-            <CarouselItem key={image.id} className="group">
-              <div className="w-full aspect-[3/4] overflow-hidden rounded-md">
-                <Image
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.attributes?.url}`}
-                  alt={normalized.attributes?.productName || 'Producto'}
-                  width={500}
-                  height={500}
-                  className="w-full h-full object-cover transition-transform duration-300group-hover:scale-105"
-                />
-              </div>
-              <div className="absolute w-full px-6 transition duration-200 opacity-0 group-hover:opacity-100 bottom-5">
-                <div className="flex justify-center gap-x-6">
-                  <IconButton onClick={() => productSlug && router.push(`/product/${productSlug}`)} icon={<Expand size={20} className="text-gray-600" />} />
-                  <IconButton onClick={() => console.log('product')} icon={<ShoppingCart size={20} className="text-gray-600" />} />
+          {normalized.attributes.images?.data?.map((image) => {
+            // ✅ Lógica segura para Cloudinary + local + Render
+            const rawUrl = image?.attributes?.url;
+            const imageUrl = rawUrl?.startsWith("http")
+              ? rawUrl
+              : `${process.env.NEXT_PUBLIC_BACKEND_URL}${rawUrl || ""}`;
 
+            return (
+              <CarouselItem key={image.id} className="group">
+                <div className="w-full aspect-[3/4] overflow-hidden rounded-md">
+                  <Image
+                    src={imageUrl}
+                    alt={normalized.attributes?.productName || "Producto"}
+                    width={500}
+                    height={500}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
                 </div>
 
-              </div>
-            </CarouselItem>
-          ))}
+                <div className="absolute w-full px-6 transition duration-200 opacity-0 group-hover:opacity-100 bottom-5">
+                  <div className="flex justify-center gap-x-6">
+                    <IconButton onClick={() => productSlug && router.push(`/product/${productSlug}`)} icon={<Expand size={20} className="text-gray-600" />} />
+                    <IconButton onClick={() => console.log('product')} icon={<ShoppingCart size={20} className="text-gray-600" />} />
+
+                  </div>
+
+                </div>
+              </CarouselItem>
+            )
+          })}
         </CarouselContent>
       </Carousel>
       <p className="text-2xl text-center font-sans">{normalized.attributes.productName}</p>
