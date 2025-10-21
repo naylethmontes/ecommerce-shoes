@@ -10,7 +10,12 @@ const nextConfig = {
 			},
 			{
 				protocol: 'https',
-				hostname: 'tu-dominio-de-produccion.com', // 👈 cuando subas a producción
+				hostname: 'res.cloudinary.com', // 👈 cuando subas a producción
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: 'ecommerce-shoes-backend-2.onrender.com', // 👈 dominio de tu Strapi en render
 				pathname: '/uploads/**',
 			},
 		],
