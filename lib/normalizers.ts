@@ -1,11 +1,7 @@
 import { ProductType } from '@/types/product';
 import { ColorType } from '@/types/colors';
 
-// Normaliza un objeto de producto que puede venir con o sin 'attributes'.
-// Evitamos usar `any` en la API pública: el parámetro es `unknown` y hacemos
-// chequeos locales antes de leer propiedades.
 export function normalizeProduct(raw: unknown): ProductType {
-	// Si ya tiene la forma esperada, devolver como tal
 	if (
 		typeof raw === 'object' &&
 		raw !== null &&
@@ -179,45 +175,60 @@ export function normalizeProduct(raw: unknown): ProductType {
 
 // Normaliza una categoría que puede venir plana o con { attributes: { mainImage: { data: { attributes: { url }}}}}
 export function normalizeCategory(raw: unknown) {
-	const r = (raw as Record<string, unknown>) ?? {};
+	const rRec = (raw as Record<string, unknown>) ?? {};
 	const getString = (v: unknown) => (typeof v === 'string' ? v : '');
 
-	// intentar forma antigua
-	const urlFromData = (r as any)?.attributes?.mainImage?.data?.attributes?.url;
+	// Helper para intentar extraer url desde la forma antigua: attributes.mainImage.data.attributes.url
+	const attrs =
+		(rRec.attributes as Record<string, unknown> | undefined) ?? undefined;
+	let urlFromData: string | undefined;
+	if (
+		attrs &&
+		typeof attrs.mainImage === 'object' &&
+		attrs.mainImage !== null
+	) {
+		const main = attrs.mainImage as Record<string, unknown>;
+		const data =
+			(main.data as Record<string, unknown> | undefined) ?? undefined;
+		const dataAttrs =
+			(data?.attributes as Record<string, unknown> | undefined) ?? undefined;
+		if (dataAttrs) urlFromData = getString(dataAttrs.url);
+	}
+
 	if (urlFromData) {
+		const id = typeof rRec.id === 'number' ? rRec.id : 0;
+		const categoryName = getString(attrs?.categoryName ?? rRec.categoryName);
+		const slug = getString(attrs?.slug ?? rRec.slug);
 		return {
-			id: typeof (r as any).id === 'number' ? (r as any).id : 0,
+			id,
 			attributes: {
-				categoryName: getString(
-					(r as any).attributes?.categoryName ?? (r as any).categoryName,
-				),
-				slug: getString((r as any).attributes?.slug ?? (r as any).slug),
-				mainImage: {
-					data: {
-						attributes: { url: getString(urlFromData) },
-					},
-				},
+				categoryName,
+				slug,
+				mainImage: { data: { attributes: { url: getString(urlFromData) } } },
 			},
 		};
 	}
 
-	// forma plana con formats / url
-	const flat = raw as Record<string, unknown>;
-	const maybeMain = (flat.attributes as any)?.mainImage ?? flat.mainImage;
-	const imageUrl = maybeMain?.formats?.medium?.url ?? maybeMain?.url ?? '';
+	// Forma plana con formats / url
+	const flat = rRec;
+	const flatAttrs =
+		(flat.attributes as Record<string, unknown> | undefined) ?? undefined;
+	const maybeMain = flatAttrs?.mainImage ?? (flat.mainImage as unknown);
+	let imageUrl = '';
+	if (maybeMain && typeof maybeMain === 'object') {
+		const mm = maybeMain as Record<string, unknown>;
+		const maybeFormats =
+			(mm.formats as Record<string, unknown> | undefined) ?? undefined;
+		const medium = maybeFormats?.medium as Record<string, unknown> | undefined;
+		imageUrl = getString(medium?.url ?? mm.url);
+	}
 
 	return {
 		id: typeof flat.id === 'number' ? flat.id : 0,
 		attributes: {
-			categoryName: getString(
-				(flat.attributes as any)?.categoryName ?? flat.categoryName,
-			),
-			slug: getString((flat.attributes as any)?.slug ?? flat.slug),
-			mainImage: {
-				data: {
-					attributes: { url: getString(imageUrl) },
-				},
-			},
+			categoryName: getString(flatAttrs?.categoryName ?? flat.categoryName),
+			slug: getString(flatAttrs?.slug ?? flat.slug),
+			mainImage: { data: { attributes: { url: getString(imageUrl) } } },
 		},
 	};
 }
