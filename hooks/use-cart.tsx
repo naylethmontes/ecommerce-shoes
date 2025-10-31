@@ -41,8 +41,10 @@ export const useCart = create(persist<CartStore>((set, get) => ({
       return
     }
 
+    // Respect existing cartItemId if provided, otherwise generate one
+    const itemToAdd = { ...data, cartItemId: data.cartItemId ?? crypto.randomUUID() };
     set({
-      items: [...get().items, { ...data, cartItemId: crypto.randomUUID() }]
+      items: [...get().items, itemToAdd]
     });
     toast.success("Producto añadido al carrito 🛍")
 
@@ -101,19 +103,23 @@ export const useCart = create(persist<CartStore>((set, get) => ({
   updateItemColor: (cartItemId, newColor) => {
     const updatedItems = get().items.map(item => {
       if (item.cartItemId === cartItemId) {
-        // Buscar la imagen del color seleccionado
-        const colorData = item.attributes.colors.data.find(
-          color => color.attributes.name === newColor
-        );
-        const newImage = colorData?.attributes.imageColor?.data?.attributes?.url
+        // Normalizar nombre de color
+        const normalizedColor = newColor?.trim() ?? ''
+        // Buscar la imagen del color seleccionado (robusto a formas planas o nested)
+        const colorList = item.attributes.colors?.data ?? []
+        const colorData = colorList.find((color) => {
+          const name = color?.attributes?.name ?? ''
+          return String(name).trim() === normalizedColor
+        })
+
+        const newImage = colorData?.attributes?.imageColor?.data?.attributes?.url ?? undefined
         if (!colorData) {
           toast.warning("Color no tiene imagen asociada");
         }
 
-
         return {
           ...item,
-          selectedColor: newColor,
+          selectedColor: normalizedColor,
           selectedColorImage: newImage,
         };
       }

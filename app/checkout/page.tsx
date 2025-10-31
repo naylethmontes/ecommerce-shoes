@@ -64,7 +64,7 @@ const CheckoutForm = () => {
     try {
 
       const signatureRes = await axios.post(
-        "http://localhost:1337/api/orders/generate-signature", {
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders/generate-signature`, {
         reference: uuid,
         amountInCents,
         currency: 'COP',
@@ -74,7 +74,7 @@ const CheckoutForm = () => {
 
 
       const orderRes = await axios.post(
-        "http://localhost:1337/api/orders",
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/orders`,
         {
 
           buyer: formData,

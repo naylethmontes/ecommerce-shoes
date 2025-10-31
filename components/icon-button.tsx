@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 
 interface IconButtonProps {
-  onClick: () => void
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   icon: React.ReactElement
   className?: string
 

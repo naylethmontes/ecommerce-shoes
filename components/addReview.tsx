@@ -38,11 +38,14 @@ export default function AddReview({
       return toast.error("La calificación es obligatoria");
     }
 
-    const alreadyReviewed = user
-      ? reviews.some(
-        (review) => review.attributes.user?.data?.id === user?.id
-      ) : false;
-    console.log(reviews);
+    const alreadyReviewed =
+      Array.isArray(reviews) &&
+      user &&
+      reviews.some((review) => {
+        const reviewUserId = review?.user?.id;
+        return reviewUserId === user.id;
+      });
+
 
     if (alreadyReviewed) {
       toast.error("Ya agregaste reseña a este producto");
@@ -61,24 +64,27 @@ export default function AddReview({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+            ...(token && { Authorization: `Bearer ${token}` }),
           },
           body: JSON.stringify({
             data: {
               comment,
               rating,
-              username: user?.username,
               product: productId,
               user: user?.id,
-            },
+              username: user?.username,
+            }
           }),
         }
       );
 
+      const result = await res.json();
+
       if (!res.ok) {
-        const errorData = await res.json();
-        const message = errorData?.error?.message || "Error guardando reseña";
+        const message = result?.error?.message || "Error guardando reseña";
         toast.error(message);
+        setLoading(false);
+        return;
       }
 
       // Resetear formulario

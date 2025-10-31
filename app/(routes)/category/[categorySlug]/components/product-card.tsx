@@ -7,6 +7,7 @@ import { normalizeProduct } from '@/lib/normalizers'
 import IconButton from "@/components/icon-button"
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel"
 import Image from "next/image"
+import { useCart } from "@/hooks/use-cart"
 
 type ProductCardProps = {
   product: ProductType
@@ -16,6 +17,7 @@ const ProductCard = (props: ProductCardProps) => {
   const { product } = props
   const normalized = normalizeProduct(product)
   const router = useRouter()
+  const { addItem } = useCart()
 
   // Asegurarse de que product y product.attributes existan antes de renderizar el link
   const productSlug = normalized.attributes.slug;
@@ -53,8 +55,24 @@ const ProductCard = (props: ProductCardProps) => {
 
                 <div className="absolute w-full px-6 transition duration-200 opacity-0 group-hover:opacity-100 bottom-5">
                   <div className="flex justify-center gap-x-6">
-                    <IconButton onClick={() => productSlug && router.push(`/product/${productSlug}`)} icon={<Expand size={20} className="text-gray-600" />} />
-                    <IconButton onClick={() => console.log('product')} icon={<ShoppingCart size={20} className="text-gray-600" />} />
+
+                    <IconButton onClick={() => productSlug && router.push(`/product/${productSlug}`)} icon={<Expand size={20}
+                      className="text-gray-600" />} />
+
+                    <IconButton
+                      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        addItem({
+                          ...normalized,
+                          selectedSize: undefined,
+                          selectedColor: undefined,
+                          selectedColorImage: undefined,
+                          cartItemId: crypto.randomUUID(),
+                        })
+                      }}
+                      icon={<ShoppingCart size={20} />}
+                      className="text-gray-600" />
 
                   </div>
 

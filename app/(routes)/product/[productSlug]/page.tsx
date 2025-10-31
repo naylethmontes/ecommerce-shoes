@@ -5,7 +5,7 @@ import SkeletonProduct from "./components/skeleton-product"
 import CarouselProduct from "./components/carousel-product"
 import InfoProduct from "./components/info-product"
 import { normalizeProduct } from '@/lib/normalizers'
-import ReviewsSection from "@/components/reviewsSection"
+
 
 export default function Page() {
   const params = useParams<{ productSlug: string }>()
@@ -30,7 +30,7 @@ export default function Page() {
         <CarouselProduct images={normalized.attributes.images} />
         <InfoProduct product={normalized} />
       </div>
-      <ReviewsSection productId={product.id} />
+
     </div>
   )
 

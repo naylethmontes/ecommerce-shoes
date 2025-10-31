@@ -1,17 +1,15 @@
-export interface ReviewsType {
+export interface ReviewType {
 	id: number;
-	attributes: {
+	username: string;
+	comment: string;
+	rating: number;
+	createdAt: string;
+	product: {
+		id: number;
+		productName: string;
+	};
+	user: {
+		id: number;
 		username: string;
-		comment: string;
-		rating: number;
-		createdAt: string;
-		user?: {
-			data?: {
-				id: number;
-				attributes: {
-					username: string;
-				};
-			};
-		};
 	};
 }

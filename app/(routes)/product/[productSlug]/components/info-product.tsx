@@ -7,7 +7,6 @@ import { useLovedProducts } from "@/hooks/use-loved-products"
 import { formatPrice } from "@/lib/formatPrice"
 import { ProductType } from "@/types/product"
 import { Heart } from "lucide-react"
-import Image from "next/image"
 import { useState } from "react"
 import { normalizeProduct } from '@/lib/normalizers'
 
@@ -53,17 +52,19 @@ const InfoProduct = ({ product }: InfoProductProps) => {
       ? normalized.attributes.price - (normalized.attributes.price * discount) / 100
       : normalized.attributes.price;
 
+    // Guardar color/talla explícitamente y usar la versión normalizada del producto
+    const chosenColor = selectedColor?.trim() ?? ''
+
     const newItem: CartItem = {
-      ...product,
-      selectedSize,
-      selectedColor,
-      selectedColorImage: selectedColorImage || undefined,
-      cartItemId: crypto.randomUUID(),
+      id: normalized.id,
       attributes: {
         ...normalized.attributes,
         price: discountedPrice, // aplicamos el precio con descuento
       },
-
+      selectedSize,
+      selectedColor: chosenColor,
+      selectedColorImage: selectedColorImage || undefined,
+      cartItemId: crypto.randomUUID(),
     };
     addItem(newItem)
   }
@@ -113,20 +114,6 @@ const InfoProduct = ({ product }: InfoProductProps) => {
 
           })}
         </div>
-
-        {/* Imagen del color seleccionado */}
-        {previewSrc && (
-          <div className="">
-            <Image
-              src={previewSrc}
-              alt="Product"
-              width={500}
-              height={500}
-              className="w-20 h-20 object-cover rounded-md border"
-            />
-          </div>
-        )}
-
       </div>
 
 

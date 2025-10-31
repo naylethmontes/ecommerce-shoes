@@ -32,6 +32,7 @@ export function useLogin() {
           id: data.user.id,
           username: data.user.username,
           email: data.user.email,
+          token: data.jwt,
         },
         token: data.jwt, // el token real de Strapi
       });

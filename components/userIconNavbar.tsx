@@ -38,7 +38,7 @@ export default function UserIconNavbar() {
         <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow z-10">
           <button
             onClick={handleLogout}
-            className="w-full text-left px-4 py-2 hover:bg-gray-100 font-sans"
+            className="w-full text-left px-4 py-2 hover:bg-gray-100 font-sans dark:text-gray-700"
           >
             Cerrar sesión
           </button>
