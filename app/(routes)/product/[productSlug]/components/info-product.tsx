@@ -24,17 +24,6 @@ const InfoProduct = ({ product }: InfoProductProps) => {
   const [selectedColorImage, setSelectedColorImage] = useState<string | null>(null)
   const [error, setError] = useState(false)
 
-  // Preparar una URL segura para la imagen de preview
-  // ✅ Función para generar una URL válida tanto local como Cloudinary
-  const getImageUrl = (url?: string | null): string => {
-    if (!url) return "";
-    return url.startsWith("http")
-      ? url
-      : `${process.env.NEXT_PUBLIC_BACKEND_URL}${url}`;
-  };
-
-  // ✅ Usamos la imagen del color seleccionado o la primera disponible
-
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {
       setError(true)
