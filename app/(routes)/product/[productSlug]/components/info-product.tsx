@@ -34,10 +34,6 @@ const InfoProduct = ({ product }: InfoProductProps) => {
   };
 
   // ✅ Usamos la imagen del color seleccionado o la primera disponible
-  const previewSrc = getImageUrl(
-    selectedColorImage || normalized.attributes.images?.data?.[0]?.attributes?.url
-  );
-
 
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor) {

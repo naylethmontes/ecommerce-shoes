@@ -107,15 +107,12 @@ const CarouselProduct = ({ images, selectedColorImage }: CarouselProductProps) =
     }
   }
 
-  const handleTouchEnd = (_e: React.TouchEvent<HTMLDivElement>) => {
-    // keep current zoom on touch end; users requested original zoom behavior (no pinch)
-  }
 
   return (
     <div className="flex flex-col lg:flex-row gap-1 sm:gap-2 w-full max-w-6xl px-2">
       {/* Miniaturas */}
       <div className="flex flex-row lg:flex-col gap-2 lg:gap-3 order-2 lg:order-1 justify-center">
-        {/* Build thumbnails: include selectedColorImage first if present */}
+
         {((selectedColorImage ? [{ id: -1, attributes: { url: selectedColorImage } }] : [])
           .concat(validImages)
         ).map((image) => {
@@ -154,7 +151,6 @@ const CarouselProduct = ({ images, selectedColorImage }: CarouselProductProps) =
           onMouseEnter={handleMouseEnter}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
         />
       ) : (
         <div className="h-[500px] w-full bg-gray-100 flex items-center justify-center rounded-xl">
